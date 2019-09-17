@@ -60,7 +60,7 @@ import org.slf4j.LoggerFactory;
  * <tt>WebSocketServer</tt> is an abstract class that only takes care of the
  * HTTP handshake portion of WebSockets. It's up to a subclass to add
  * functionality/purpose to the server.
- * 
+ *
  */
 public abstract class WebSocketServer extends AbstractWebSocket implements Runnable {
 
@@ -112,7 +112,7 @@ public abstract class WebSocketServer extends AbstractWebSocket implements Runna
 	/**
 	 * Creates a WebSocketServer that will attempt to
 	 * listen on port <var>WebSocketImpl.DEFAULT_PORT</var>.
-	 * 
+	 *
 	 * @see #WebSocketServer(InetSocketAddress, int, List, Collection) more details here
 	 */
 	public WebSocketServer()  {
@@ -121,7 +121,7 @@ public abstract class WebSocketServer extends AbstractWebSocket implements Runna
 
 	/**
 	 * Creates a WebSocketServer that will attempt to bind/listen on the given <var>address</var>.
-	 * 
+	 *
 	 * @see #WebSocketServer(InetSocketAddress, int, List, Collection) more details here
 	 * @param address The address to listen to
 	 */
@@ -173,7 +173,7 @@ public abstract class WebSocketServer extends AbstractWebSocket implements Runna
 	/**
 	 * Creates a WebSocketServer that will attempt to bind/listen on the given <var>address</var>,
 	 * and comply with <tt>Draft</tt> version <var>draft</var>.
-	 * 
+	 *
 	 * @param address
 	 *            The address (host:port) this server should listen on.
 	 * @param decodercount
@@ -181,12 +181,12 @@ public abstract class WebSocketServer extends AbstractWebSocket implements Runna
 	 * @param drafts
 	 *            The versions of the WebSocket protocol that this server
 	 *            instance should comply to. Clients that use an other protocol version will be rejected.
-	 * 
+	 *
 	 * @param connectionscontainer
 	 *            Allows to specify a collection that will be used to store the websockets in. <br>
 	 *            If you plan to often iterate through the currently connected websockets you may want to use a collection that does not require synchronization like a {@link CopyOnWriteArraySet}. In that case make sure that you overload {@link #removeConnection(WebSocket)} and {@link #addConnection(WebSocket)}.<br>
 	 *            By default a {@link HashSet} will be used.
-	 * 
+	 *
 	 * @see #removeConnection(WebSocket) for more control over syncronized operation
 	 * @see <a href="https://github.com/TooTallNate/Java-WebSocket/wiki/Drafts" > more about drafts</a>
 	 */
@@ -219,9 +219,9 @@ public abstract class WebSocketServer extends AbstractWebSocket implements Runna
 	 * Starts the server selectorthread that binds to the currently set port number and
 	 * listeners for WebSocket connection requests. Creates a fixed thread pool with the size {@link WebSocketServer#AVAILABLE_PROCESSORS}<br>
 	 * May only be called once.
-	 * 
+	 *
 	 * Alternatively you can call {@link WebSocketServer#run()} directly.
-	 * 
+	 *
 	 * @throws IllegalStateException Starting an instance again
 	 */
 	public void start() {
@@ -234,12 +234,12 @@ public abstract class WebSocketServer extends AbstractWebSocket implements Runna
 	 * Closes all connected clients sockets, then closes the underlying
 	 * ServerSocketChannel, effectively killing the server socket selectorthread,
 	 * freeing the port the server was bound to and stops all internal workerthreads.
-	 * 
+	 *
 	 * If this method is called before the server is started it will never start.
-	 * 
+	 *
 	 * @param timeout
 	 *            Specifies how many milliseconds the overall close handshaking may take altogether before the connections are closed without proper close handshaking.<br>
-	 * 
+	 *
 	 * @throws InterruptedException Interrupt
 	 */
 	public void stop( int timeout ) throws InterruptedException {
@@ -290,7 +290,7 @@ public abstract class WebSocketServer extends AbstractWebSocket implements Runna
 
 	/**
 	 * Gets the port number that this server listens on.
-	 * 
+	 *
 	 * @return The port number.
 	 */
 	public int getPort() {
@@ -337,7 +337,7 @@ public abstract class WebSocketServer extends AbstractWebSocket implements Runna
 					while ( i.hasNext() ) {
 						key = i.next();
 						conn = null;
-						
+
 						if( !key.isValid() ) {
 							continue;
 						}
@@ -502,7 +502,7 @@ public abstract class WebSocketServer extends AbstractWebSocket implements Runna
 			server = ServerSocketChannel.open();
 			server.configureBlocking( false );
 			ServerSocket socket = server.socket();
-			socket.setReceiveBufferSize( WebSocketImpl.RCVBUF );
+//			socket.setReceiveBufferSize( WebSocketImpl.RCVBUF );
 			socket.setReuseAddress( isReuseAddr() );
 			socket.bind( address );
 			selector = Selector.open();
@@ -763,7 +763,7 @@ public abstract class WebSocketServer extends AbstractWebSocket implements Runna
 	/**
 	 * Returns whether a new connection shall be accepted or not.<br>
 	 * Therefore method is well suited to implement some kind of connection limitation.<br>
-	 * 
+	 *
 	 * @see #onOpen(WebSocket, ClientHandshake)
          * @see #onWebsocketHandshakeReceivedAsServer(WebSocket, Draft, ClientHandshake)
 	 * @param key the SelectionKey for the new connection
@@ -812,7 +812,7 @@ public abstract class WebSocketServer extends AbstractWebSocket implements Runna
 	public abstract void onClose( WebSocket conn, int code, String reason, boolean remote );
 	/**
 	 * Callback for string messages received from the remote host
-	 * 
+	 *
 	 * @see #onMessage(WebSocket, ByteBuffer)
 	 * @param conn The <tt>WebSocket</tt> instance this event is occuring on.
 	 * @param message The UTF-8 decoded message that was received.
@@ -822,7 +822,7 @@ public abstract class WebSocketServer extends AbstractWebSocket implements Runna
 	 * Called when errors occurs. If an error causes the websocket connection to fail {@link #onClose(WebSocket, int, String, boolean)} will be called additionally.<br>
 	 * This method will be called primarily because of IO or protocol errors.<br>
 	 * If the given exception is an RuntimeException that probably means that you encountered a bug.<br>
-	 * 
+	 *
 	 * @param conn Can be null if there error does not belong to one specific websocket. For example if the servers port could not be bound.
 	 * @param ex The exception causing this error
 	 **/
@@ -837,7 +837,7 @@ public abstract class WebSocketServer extends AbstractWebSocket implements Runna
 
 	/**
 	 * Callback for binary messages received from the remote host
-	 * 
+	 *
 	 * @see #onMessage(WebSocket, ByteBuffer)
 	 *
 	 *  @param conn
