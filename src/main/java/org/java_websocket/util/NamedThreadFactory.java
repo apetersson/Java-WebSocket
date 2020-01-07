@@ -41,7 +41,7 @@ public class NamedThreadFactory implements ThreadFactory {
         @Override
         public Thread newThread(Runnable runnable) {
             Thread thread = defaultThreadFactory.newThread(runnable);
-            thread.setName(threadPrefix + "-" + threadNumber);
+            thread.setName(threadPrefix + "-" + threadNumber.getAndIncrement());
             return thread;
         }
 }
